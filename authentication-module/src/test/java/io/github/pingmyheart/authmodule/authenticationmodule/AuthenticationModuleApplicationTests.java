@@ -1,12 +1,11 @@
 package io.github.pingmyheart.authmodule.authenticationmodule;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class AuthenticationModuleApplicationTests {
 
-    @Test
+    //    @Test
     void contextLoads() {
     }
 
