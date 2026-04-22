@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.pingmyheart</groupId>
+    <artifactId>auth-module</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>authentication-module</module>
+        <module>authorization-module</module>
+    </modules>
+
+    <scm>
+        <url>https://github.com/pingmyheart/Auth-Module</url>
+        <connection>git://github.com/pingmyheart/Auth-Module.git</connection>
+        <developerConnection>git@github.com:pingmyheart/Auth-Module.git</developerConnection>
+    </scm>
+    <issueManagement>
+        <system>Github Issues</system>
+        <url>https://github.com/pingmyheart/Auth-Module/issues</url>
+    </issueManagement>
+    <ciManagement>
+        <system>Github Actions</system>
+        <url>https://github.com/pingmyheart/Auth-Module/actions</url>
+    </ciManagement>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/pingmyheart/Auth-Module</url>
+        </repository>
+    </distributionManagement>
+    <licenses>
+        <license>
+            <name>MIT license</name>
+            <url>https://opensource.org/license/mit</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <properties>
+        <!-- Generic -->
+        <java.version>21</java.version>
+        <!-- Spring -->
+        <spring-boot.version>3.5.8</spring-boot.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
