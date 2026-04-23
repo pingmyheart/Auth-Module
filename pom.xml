@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>authentication-module-dto</module>
         <module>authentication-module</module>
         <module>authorization-module</module>
     </modules>
@@ -61,6 +62,12 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <!-- Internal -->
+            <dependency>
+                <groupId>io.github.pingmyheart.authmodule</groupId>
+                <artifactId>authentication-module-dto</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

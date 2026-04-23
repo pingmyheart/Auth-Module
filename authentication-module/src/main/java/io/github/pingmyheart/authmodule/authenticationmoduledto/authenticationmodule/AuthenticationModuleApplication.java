@@ -1,4 +1,4 @@
-package io.github.pingmyheart.authmodule.authenticationmodule;
+package io.github.pingmyheart.authmodule.authenticationmoduledto.authenticationmodule;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

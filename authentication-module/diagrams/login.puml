@@ -1,0 +1,29 @@
+@startuml
+actor User as user #red
+participant AuthenticationController as authController #lightblue
+participant AuthenticationService as authService #lightgreen
+participant AuthenticationRepository as authRepository #lightyellow
+
+user -> authController: POST /v1/auth/token
+note right
+    User send username and password
+     through Basic Auth header
+end note
+authController -> authService: authenticate
+authService -> authRepository: findByUsernameOrEmail
+authRepository -> authService: UserEntity or null
+alt UserEntity is null
+    authService -> authController: 401 Unauthorized
+    authController -> user: 401 Unauthorized
+else UserEntity is found
+    authService -> authService: verifyPassword
+    alt Password is correct
+        authService -> authService: generateTokens
+        authService -> authController: LoginResponseBean
+        authController -> user: LoginResponseBean
+    else Password is incorrect
+        authService -> authController: 401 Unauthorized
+        authController -> user: 401 Unauthorized
+    end
+end
+@enduml

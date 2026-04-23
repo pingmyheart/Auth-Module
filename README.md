@@ -25,14 +25,7 @@ credentials.
 
 - **Endpoint**: `/api/auth/login`
 - **Method**: POST
-- **Request Body**:
-
-```json
-{
-  "username": "user1",
-  "password": "password123"
-}
-```
+- **RequestHeader**: `Authorization: Basic <base64-encoded-credentials>`
 
 - **Response**:
 
@@ -49,6 +42,7 @@ Refresh api is the endpoint to obtain new access token and refresh token based o
 
 - **Endpoint**: `/api/auth/refresh`
 - **Method**: POST
+- **RequestHeader**: `Authorization: Bearer <accessToken>`
 - **Request Body**:
 
 ```json
@@ -65,6 +59,21 @@ Refresh api is the endpoint to obtain new access token and refresh token based o
   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ``` 
+
+### Logout API
+
+Logout api simply invalidates the provided refresh token, so it can no longer be used to obtain new access tokens.
+
+- **Endpoint**: `/api/auth/logout`
+- **Method**: POST
+- **RequestHeader**: `Authorization: Bearer <accessToken>`
+- **Request Body**:
+
+```json
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
 
 ### Validate API
 

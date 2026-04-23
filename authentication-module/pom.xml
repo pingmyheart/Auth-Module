@@ -43,6 +43,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.github.pingmyheart.authmodule</groupId>
+            <artifactId>authentication-module-dto</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
