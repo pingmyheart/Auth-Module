@@ -1,0 +1,40 @@
+services:
+  mariadb:
+    image: mariadb:12.1
+    environment:
+      MARIADB_ROOT_PASSWORD: P@ssw0rd
+      MARIADB_DATABASE: authentication-module
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./volumes/mariadb:/var/lib/mysql
+  redis:
+    image: 'bitnamilegacy/redis:7.2.3'
+    hostname: redis.local
+    environment:
+      - REDIS_PASSWORD=P@ssw0rd
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    ports:
+      - '6379:6379'
+  redis-sentinel:
+    image: 'bitnamilegacy/redis-sentinel:7.2.3'
+    hostname: redis-sentinel.local
+    environment:
+      - REDIS_PASSWORD=P@ssw0rd
+      - REDIS_MASTER_HOST=localhost
+      - REDIS_SENTINEL_RESOLVE_HOSTNAMES=yes
+      - REDIS_SENTINEL_PASSWORD=P@ssw0rd
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-p", "26379", "-a", "${REDIS_PASSWORD}", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    ports:
+      - '26379-26381:26379'
+    deploy:
+      mode: replicated
+      replicas: 3

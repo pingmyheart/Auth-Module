@@ -1,0 +1,4 @@
+DATASOURCE_MYSQL_URL: jdbc:mariadb://localhost:3306/authentication-module?allowPublicKeyRetrieval=true&useSSL=false
+DATASOURCE_MYSQL_USERNAME: root
+DATASOURCE_MYSQL_PASSWORD: P@ssw0rd
+DATASOURCE_MYSQL_DRIVER: org.mariadb.jdbc.Driver

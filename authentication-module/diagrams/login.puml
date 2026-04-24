@@ -1,8 +1,10 @@
 @startuml
 actor User as user #red
 participant AuthenticationController as authController #lightblue
-participant AuthenticationService as authService #lightgreen
-participant AuthenticationRepository as authRepository #lightyellow
+participant MFAController as mfaController #lightyellow
+participant AuthenticationService as authService #lightblue
+participant MFAService as mfaService #lightyellow
+participant UserRepository as userRepository #lightgreen
 
 user -> authController: POST /v1/auth/token
 note right
@@ -10,17 +12,42 @@ note right
      through Basic Auth header
 end note
 authController -> authService: authenticate
-authService -> authRepository: findByUsernameOrEmail
-authRepository -> authService: UserEntity or null
+authService -> userRepository: findByUsernameOrEmail
+userRepository -> authService: UserEntity or null
 alt UserEntity is null
     authService -> authController: 401 Unauthorized
     authController -> user: 401 Unauthorized
 else UserEntity is found
     authService -> authService: verifyPassword
     alt Password is correct
-        authService -> authService: generateTokens
-        authService -> authController: LoginResponseBean
-        authController -> user: LoginResponseBean
+        alt MFA is not enabled
+            authService -> authService: generateTokens
+            authService -> authController: LoginResponseBean
+            authController -> user: LoginResponseBean
+        else MFA is enabled
+            authService -> authController: AdditionalInfoRequiredResponseBean
+            authController -> user: AdditionalInfoRequiredResponseBean
+            note right
+                user needs to provide MFA
+                service returns user id and MFA type
+            end note
+            user -> mfaController: POST /v1/auth/mfa/initiate
+            mfaController -> mfaService: initiate mfa with given available MFA Type
+            mfaService -> mfaController: Success
+            mfaController -> user: Success
+            user -> mfaController: POST /v1/auth/mfa/verify
+            mfaController -> mfaService: verifyMFA
+            mfaService -> mfaService: verifyMFA
+            alt MFA successful
+                mfaService -> authService: generateTokens
+                authService -> mfaService: LoginResponseBean
+                mfaService -> mfaController: LoginResponseBean
+                mfaController -> user: LoginResponseBean
+            else MFA failed
+                mfaService -> mfaController: 401 Unauthorized
+                mfaController -> user: 401 Unauthorized
+            end
+        end
     else Password is incorrect
         authService -> authController: 401 Unauthorized
         authController -> user: 401 Unauthorized

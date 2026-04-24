@@ -6,9 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public enum UserRoleEnum {
-    ROLE_ADMIN("admin"),
-    ROLE_USER("user");
-
-    private final String role;
+public enum MFATypeEnum {
+    APP,
+    MAIL
 }

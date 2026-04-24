@@ -6,6 +6,6 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
-public class RegisterMFARequestBean {
+public class InitiateMFARequestBean {
     private MFATypeEnum mfaType;
 }

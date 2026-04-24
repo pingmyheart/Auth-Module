@@ -1,0 +1,78 @@
+management:
+  endpoints:
+    metrics:
+      enabled: true
+    jmx:
+      exposure:
+        include: "*"
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+      group:
+        readiness:
+          include: readinessState
+          show-details: always
+        liveness:
+          include: livenessState
+          show-details: always
+      probes:
+        enabled: true
+spring:
+  application:
+    name: authentication-module
+  datasource:
+    url: ${DATASOURCE_MYSQL_URL}
+    username: ${DATASOURCE_MYSQL_USERNAME}
+    password: ${DATASOURCE_MYSQL_PASSWORD}
+    driver-class-name: ${DATASOURCE_MYSQL_DRIVER}
+  data:
+    jdbc:
+      dialect: mysql
+    redis:
+      sentinel:
+        username: ${REDIS_SENTINEL_USERNAME:default}
+        password: ${REDIS_SENTINEL_PASSWORD:P@ssw0rd}
+        master: ${REDIS_SENTINEL_MASTER:mymaster}
+        nodes: ${REDIS_SENTINEL_NODES:localhost:26379,localhost:26380,localhost:26381}
+  liquibase:
+    change-log: classpath:db/changelog-root.xml
+  security:
+    user:
+      name: ${SPRING_SECURITY_USER_NAME:microservice}
+      password: ${SPRING_SECURITY_USER_PASSWORD:P@ssw0rd}
+  cache:
+    type: redis
+info:
+  app:
+    artifact: "@project.artifactId@"
+    name: "@project.name@"
+    version: "@project.version@"
+    lia-web-starter: "@lia-web-starter.version@"
+logging:
+  pattern:
+    # Logging pattern containing traceId and spanId; no longer provided through Sleuth by default
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+server:
+  servlet:
+    context-path: /${spring.application.name}
+io:
+  github:
+    auth-module:
+      authentication-module:
+        init:
+          admin-user:
+            password: ${INIT_ADMIN_USER_PASSWORD:admin}
+            username: ${INIT_ADMIN_USER_USERNAME:admin}
+            email: ${INIT_ADMIN_USER_EMAIL:admin@admin.it}
+        jwt:
+          expiration: ${JWT_EXPIRATION:30}
+          expiration-time-unit: ${JWT_EXPIRATION_TIME_UNIT:MINUTES}
+          issuer: ${JWT_ISSUER:AuthModule}
+          sign-secret: ${JWT_SIGN_SECRET:ChangeThisSecretInProductionChangeThisSecretInProductionChangeThisSecretInProduction}
+          refresh-expiration: ${JWT_REFRESH_EXPIRATION:60}
+          refresh-expiration-time-unit: ${JWT_REFRESH_EXPIRATION_TIME_UNIT:MINUTES}
+        mfa:
+          issuer: ${MFA_ISSUER:AuthModule}
